@@ -8,23 +8,6 @@ async function createNewAccount(req: Request, res: Response) {
       // Destructuring req.body data
       const { username, password, email, firstName, lastName } = req.body;
      
-      
-
-      // Check if username and email is unique, if either already exist, throw error
-
-    //   const accountDataByUsername = await accountModel.getDataByUsername(username);
-    //   const accountDataByEmail = await accountModel.getDataByEmail(email);
-
-    //   if (accountDataByUsername) {
-        
-    //     throw new Error ("username already exist");
-    //   }
-
-    //   if (accountDataByEmail) {
-      
-    //     throw new Error ("email already exist");
-    //   }
-
       // Create salt
       const salt = crypto.randomBytes(6).toString("hex");
       const saltedPassword = salt + password;
