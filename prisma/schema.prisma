@@ -10,13 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id Int @id @default(autoincrement())
-  first_name String
-  last_name String
-  username String @unique
-  email String @unique
-  salt String
+  id                   Int               @id @default(autoincrement())
+  first_name           String
+  last_name            String
+  username             String            @unique
+  email                String            @unique
+  salt                 String
   hashed_salt_password String
+  EventAttendance      EventAttendance[]
+}
+
+model Event {
+  id                Int               @id @default(autoincrement())
+  event_name        String
+  event_description String
+  EventAttendance   EventAttendance[]
+}
+
+model EventAttendance {
+  eventId Int
+  event   Event @relation(fields: [eventId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  @@id([eventId, userId])
 }
