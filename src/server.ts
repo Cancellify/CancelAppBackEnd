@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { createNewAccount } from '../userController/userController';
+import { createNewAccount, login } from '../userController/userController';
 
 const cors = require("cors")
 
@@ -17,6 +17,8 @@ app.get('/', (req: Request, res: Response) => {
   });
 
 app.post("/accounts/new", createNewAccount)
+
+app.post("/accounts/login", login)
 
 
   

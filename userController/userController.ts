@@ -1,4 +1,4 @@
-import  { createUser } from "../userModel/userModel"
+import  { createUser, getUser } from "../userModel/userModel"
 import express, { Express, Request, Response } from 'express';
 import crypto from "crypto"
 
@@ -34,6 +34,64 @@ async function createNewAccount(req: Request, res: Response) {
     }
   }
 
+  async function login(req: Request, res: Response) {
+    try {
+      // Destructuring req.body data
+      const { username: inputUsername, password: inputPassword } = req.body;
+      
+      
+      // Retrive account data based on username
+      let accountData = await getUser(inputUsername);
+     
+      
+      // Throw error if username is wrong
+      if (!accountData) {
+      
+        throw new Error ();
+      }
+  
+      // Create hash password
+      const saltedInputPassword = accountData.salt + inputPassword ;
+   
+      const hash = crypto.createHash("sha256");
+      const hashSaltedInputPassword = hash.update(saltedInputPassword).digest("hex");
+  
+      // Throw error if password is wrong
+      if (hashSaltedInputPassword !== accountData.hashed_salt_password) {
+        throw new Error ();
+      }
+
+      // If password match, 
+      const sentAccountData = {
+        firstName: accountData.first_name,
+        lastName: accountData.last_name,
+        username: accountData.username,
+      }
+   
+      res.status(200).send(JSON.stringify(sentAccountData));
+
+      // const sessionToken = generateSessionToken();
+    
+
+    // const oneDay = 1000 * 60 * 60 * 24;
+    // app.use(session({
+    //   secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    //   saveUninitialized:true,
+    //   cookie: { maxAge: oneDay },
+    //   resave: false 
+    // }));
 
 
-  export { createNewAccount }
+    // const sessionToken = generateSessionToken();
+    
+    // res.cookie("testtoken", sessionToken, {maxAge: 360000}).status(200).send('Cookie added!');
+    
+
+    } catch (err) {
+      res.status(401).send("Invalid Username or Password");
+    }
+  }
+
+
+
+  export { createNewAccount, login }
