@@ -7,8 +7,8 @@ async function createNewEvent(newEvent: any) {
 return data.id
 }
 
-// async function createAttendance(event) {
-    
-// }
+async function createAttendance(event: any) {
+    await prisma.eventAttendance.create({data: event})
+}
 
-export {createNewEvent}
+export {createNewEvent, createAttendance}
