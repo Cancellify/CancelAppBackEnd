@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only src/server.ts",
-    "build": "npm install && npx prisma db pull && npx prisma migrate reset && npx prisma migrate deploy"
+    "build": "npm install && npx prisma db pull && npx prisma migrate reset && npx prisma migrate deploy --force"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
