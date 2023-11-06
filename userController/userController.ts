@@ -1,4 +1,4 @@
-import  { createUser, getUser } from "../userModel/userModel"
+import  { createUser, getUser, getAll } from "../userModel/userModel"
 import express, { Express, Request, Response } from 'express';
 import crypto from "crypto"
 
@@ -93,5 +93,20 @@ async function createNewAccount(req: Request, res: Response) {
   }
 
 
+  async function getAllUsers(req: Request, res: Response) {
+    try {
+      const data = await getAll();
 
-  export { createNewAccount, login }
+      res.status(200).send(data);
+     
+
+    } catch (err) {
+      res.status(401).send("Invalid Request");
+    }
+  }
+
+
+
+
+
+  export { createNewAccount, login, getAllUsers }
