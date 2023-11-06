@@ -67,24 +67,10 @@ async function createNewAccount(req: Request, res: Response) {
         lastName: accountData.last_name,
         username: accountData.username,
       }
+
+      
    
       res.status(200).send(JSON.stringify(sentAccountData));
-
-      // const sessionToken = generateSessionToken();
-    
-
-    // const oneDay = 1000 * 60 * 60 * 24;
-    // app.use(session({
-    //   secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    //   saveUninitialized:true,
-    //   cookie: { maxAge: oneDay },
-    //   resave: false 
-    // }));
-
-
-    // const sessionToken = generateSessionToken();
-    
-    // res.cookie("testtoken", sessionToken, {maxAge: 360000}).status(200).send('Cookie added!');
     
 
     } catch (err) {
