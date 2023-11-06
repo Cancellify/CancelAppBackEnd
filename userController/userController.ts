@@ -68,7 +68,6 @@ async function createNewAccount(req: Request, res: Response) {
         username: accountData.username,
       }
 
-      
    
       res.status(200).send(JSON.stringify(sentAccountData));
     
