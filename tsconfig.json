@@ -8,6 +8,6 @@
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist",
         "sourceMap": true,
-        "lib": ["ESNext"],
+        "lib": ["ESNext", "DOM"],
     },
 }
