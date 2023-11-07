@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import { createAttendance, createNewEvent, getEvents, getEventDetails } from '../eventModel/eventModel';
 import { getUser } from '../userModel/userModel';
 import { sendMail, mailOptions, transporter } from '../sendmail';
-
+const moment = require('moment');
 
 
 async function createEvent(req: Request, res: Response) {
@@ -48,10 +48,19 @@ async function createEvent(req: Request, res: Response) {
       
       await createAttendance(creatorAttend);
 
+      let humanReadableDate: any = moment(date).format("MMM Do YY");
+      console.log(humanReadableDate)
+
       mailOptions.to = userEmailArray
+      mailOptions.text = `You have been invited to ${eventName} by ${creator} on ${humanReadableDate} \n
+                            Please go to Cancellify to set your attendance to coming if you would like to attend.
+                          \n \n
+                          Best Regards, \n
+                          Cancellify Team`
 
+      if(userEmailArray.length > 0){
       sendMail(transporter, mailOptions);
-
+      }
       
 
 
@@ -76,11 +85,23 @@ async function createEvent(req: Request, res: Response) {
         eventDetails.push(allDetails);
       }
 
+      let eventArray:any = [];
+      for(let i = 0; i < data.length; i++){
+      for(let j = 0; j < eventDetails.length; j++){
+        if(data[i].eventId === eventDetails[j][0].id){
+          let eventObj = {
+            attendance: data[i].attendance,
+            eventName: eventDetails[j][0].event_name,
+            eventDescription: eventDetails[j][0].event_description,
+            date: eventDetails[j][0].Date,
+            secret: data[i].secret,
+          }
+          eventArray.push(eventObj);
+        }
+      }
+    }
 
-      console.log(eventDetails);
-      console.log(data);
-
-      res.status(201).send("events fetched");
+      res.status(201).send(eventArray);
     } catch (error: any) {
       res.status(409).send(`Failed to create event: ${error.message}`);
     }
