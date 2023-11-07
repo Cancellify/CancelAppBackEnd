@@ -20,6 +20,14 @@ app.use(cors({
    "secure": false
  }
 }))
+
+app.use(cors({
+  "/api": {
+    "target": "https://cancel-app-front-r80fkrd3d-william-brammers-projects.vercel.app/",
+    "pathRewrite": {"^/api" : ""},
+   "secure": false
+ }
+}))
 const SECRET = crypto.randomBytes(22).toString("hex");
 app.use(session({
 //   store: new pgSession({
