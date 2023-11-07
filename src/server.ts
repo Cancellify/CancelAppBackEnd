@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import crypto from "crypto"
 import { createNewAccount, getAllUsers, login } from '../userController/userController';
-import { createEvent, getAllEvents } from '../eventController/eventController';
+import { createEvent, getAllEvents, cancelEvent } from '../eventController/eventController';
 import { config } from 'process';
 const cors = require("cors")
 const session = require("express-session")
@@ -58,6 +58,8 @@ app.get("/accounts/all", getAllUsers)
 app.post("/events/create", createEvent)
 
 app.post("/events/all", getAllEvents)
+
+app.patch("events/cancel", cancelEvent)
 
 
   

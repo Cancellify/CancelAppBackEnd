@@ -3,7 +3,7 @@
     "start": "npm index.js",
     "heroku-start": "ts-node \"./src/server.ts\"",
     "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only src/server.ts",
-    "build": "npm install && npx prisma db pull && npx prisma migrate reset --force && npx prisma migrate deploy && npx --package=typescript -- tsc"
+    "build": "npm install && npx prisma db pull && npx prisma migrate deploy && npx --package=typescript -- tsc"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",

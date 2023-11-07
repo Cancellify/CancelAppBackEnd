@@ -108,4 +108,41 @@ async function createEvent(req: Request, res: Response) {
   }
   
 
-export {createEvent, getAllEvents}
+  async function cancelEvent(req: Request, res: Response) {
+    try{
+      let { id } = req.body;
+
+      id = Number(id)
+
+      const data = await getEvents(id);
+
+      let eventDetails = [];
+
+      for(let i =0; i < data.length; i ++){
+        let allDetails = await getEventDetails(data[i].eventId);
+        eventDetails.push(allDetails);
+      }
+
+      let eventArray:any = [];
+      for(let i = 0; i < data.length; i++){
+      for(let j = 0; j < eventDetails.length; j++){
+        if(data[i].eventId === eventDetails[j][0].id){
+          let eventObj = {
+            attendance: data[i].attendance,
+            eventName: eventDetails[j][0].event_name,
+            eventDescription: eventDetails[j][0].event_description,
+            date: eventDetails[j][0].Date,
+            secret: data[i].secret,
+          }
+          eventArray.push(eventObj);
+        }
+      }
+    }
+
+      res.status(201).send("Attendance Set");
+    } catch (error: any) {
+      res.status(409).send(`Failed to create event: ${error.message}`);
+    }
+  }
+
+export {createEvent, getAllEvents, cancelEvent}
