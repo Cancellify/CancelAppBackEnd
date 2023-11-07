@@ -49,10 +49,9 @@ async function createEvent(req: Request, res: Response) {
       await createAttendance(creatorAttend);
 
       let humanReadableDate: any = moment(date).format("MMM Do YY");
-      console.log(humanReadableDate)
 
       mailOptions.to = userEmailArray
-      mailOptions.text = `You have been invited to ${eventName} by ${creator} on ${humanReadableDate} \n
+      mailOptions.html = `You have been invited to ${eventName} by ${creator} on ${humanReadableDate} \n
                             Please go to Cancellify to set your attendance to coming if you would like to attend.
                           \n \n
                           Best Regards, \n

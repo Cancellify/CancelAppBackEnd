@@ -13,13 +13,13 @@ const app: Express = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.json());
-app.use(cors({
-  "/api": {
-    "target": "http://localhost:8080",
-    "pathRewrite": {"^/api" : ""},
-   "secure": false
- }
-}))
+// app.use(cors({
+//   "/api": {
+//     "target": "http://localhost:8080",
+//     "pathRewrite": {"^/api" : ""},
+//    "secure": false
+//  }
+// }))
 const SECRET = crypto.randomBytes(22).toString("hex");
 app.use(session({
 //   store: new pgSession({
