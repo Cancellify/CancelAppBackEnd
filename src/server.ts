@@ -15,7 +15,7 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors({
   "/api": {
-    "target": "https://cancel-app-front-r80fkrd3d-william-brammers-projects.vercel.app/",
+    "target": "https://cancellify-2681bafbf4fb.herokuapp.com/",
     "pathRewrite": {"^/api" : ""},
    "secure": false
  }
