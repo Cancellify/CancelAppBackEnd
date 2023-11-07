@@ -22,6 +22,16 @@ async function getEvents(id: number){
     return data;
 }
 
+async function getEventsByEvent(id: number){
+    const data = await prisma.eventAttendance.findMany({
+        where: {
+            eventId : id
+        }
+    })
+
+    return data;
+}
+
 async function getEventDetails(eventId: number){
     const data = await prisma.event.findMany({
         where: {
@@ -32,5 +42,24 @@ async function getEventDetails(eventId: number){
     return data;
 }
 
+async function updateAttendance(attendance:boolean, userId: number, eventId:number) {
+    const data = await prisma.eventAttendance.updateMany({
+       where: {
+        eventId: eventId,
+        userId: userId
+       },
+       data: {attendance: attendance}
+      })
+   return data; 
+}
 
-export {createNewEvent, createAttendance, getEvents, getEventDetails}
+async function deleteAttendance(event:number) {
+    await prisma.eventAttendance.deleteMany({
+        where: {
+            eventId: event
+        }
+    })
+}
+
+
+export {createNewEvent, createAttendance, getEvents, getEventDetails, updateAttendance, getEventsByEvent, deleteAttendance}

@@ -59,7 +59,7 @@ app.post("/events/create", createEvent)
 
 app.post("/events/all", getAllEvents)
 
-app.patch("events/cancel", cancelEvent)
+app.patch("/events/cancel", cancelEvent)
 
 
   

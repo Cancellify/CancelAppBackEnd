@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createAttendance, createNewEvent, getEvents, getEventDetails } from '../eventModel/eventModel';
-import { getUser } from '../userModel/userModel';
+import { createAttendance, createNewEvent, getEvents, getEventDetails, updateAttendance, getEventsByEvent, deleteAttendance } from '../eventModel/eventModel';
+import { getUser, getUserEmail } from '../userModel/userModel';
 import { sendMail, mailOptions, transporter } from '../sendmail';
 import  moment  from "moment"
 
@@ -95,6 +95,8 @@ async function createEvent(req: Request, res: Response) {
             eventDescription: eventDetails[j][0].event_description,
             date: eventDetails[j][0].Date,
             secret: data[i].secret,
+            eventId: eventDetails[j][0].id,
+            userId: data[i].userId
           }
           eventArray.push(eventObj);
         }
@@ -110,34 +112,49 @@ async function createEvent(req: Request, res: Response) {
 
   async function cancelEvent(req: Request, res: Response) {
     try{
-      let { id } = req.body;
+    let { attendance, userId, eventId } = req.body
+    
+    await updateAttendance(attendance, userId, eventId);
 
-      id = Number(id)
+    const data = await getEventsByEvent(eventId);
 
-      const data = await getEvents(id);
+    console.log(data);
 
-      let eventDetails = [];
+    const eventData = await getEventDetails(eventId);
+    console.log(eventData)
 
-      for(let i =0; i < data.length; i ++){
-        let allDetails = await getEventDetails(data[i].eventId);
-        eventDetails.push(allDetails);
-      }
+    let emailSend = false;
 
-      let eventArray:any = [];
-      for(let i = 0; i < data.length; i++){
-      for(let j = 0; j < eventDetails.length; j++){
-        if(data[i].eventId === eventDetails[j][0].id){
-          let eventObj = {
-            attendance: data[i].attendance,
-            eventName: eventDetails[j][0].event_name,
-            eventDescription: eventDetails[j][0].event_description,
-            date: eventDetails[j][0].Date,
-            secret: data[i].secret,
-          }
-          eventArray.push(eventObj);
-        }
+    for(let i = 0; i < data.length; i++){
+      if(data[i].attendance === true){
+        emailSend = true;
+        return;
       }
     }
+
+    const emailArray = []
+    
+    if(emailSend === false){
+      for(let i = 0; i < data.length; i++){
+      let email = await getUserEmail(data[i].userId)
+      emailArray.push(email.email);
+    }
+  }
+  console.log(emailArray);
+  if(emailSend === false){
+      mailOptions.to = emailArray
+      mailOptions.html = `Congrats ${eventData[0].event_description} has been canceled by ALL!
+                            
+                          <br/>
+                          Enjoy Sleeping
+                          <br/>
+                          Cancellify Team`
+      sendMail(transporter, mailOptions);
+      await deleteAttendance(eventId);
+
+      }
+    
+    
 
       res.status(201).send("Attendance Set");
     } catch (error: any) {

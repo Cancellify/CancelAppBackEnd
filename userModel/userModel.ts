@@ -16,6 +16,17 @@ async function getUser(inputUsername: any){
     return data
 }
 
+async function getUserEmail(id:number) {
+    let data = await prisma.user.findUnique({
+        where:{
+            id: id
+        }, select: {
+            email: true
+        }
+    })
+    return data;
+}
+
 async function getAll() {
     const data = await prisma.user.findMany({
         select: {
@@ -29,4 +40,4 @@ async function getAll() {
 
 
 
-export { createUser, getUser, getAll }
+export { createUser, getUser, getAll, getUserEmail }
