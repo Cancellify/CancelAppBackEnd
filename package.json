@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "tsc",
+    "postinstall": "npx tsc",
     "start": "node dist/index.js",
     "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only src/server.ts",
     "build": "npm install && npx prisma db pull && npx prisma migrate reset --force && npx prisma migrate deploy"
