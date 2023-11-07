@@ -29,7 +29,11 @@ app.use(express.json());
 //  }
 // }))
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  methods: "GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS",
+  credentials: true
+}));
 
 const SECRET = crypto.randomBytes(22).toString("hex");
 app.use(session({
