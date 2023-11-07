@@ -3,8 +3,8 @@ import crypto from "crypto"
 import { createNewAccount, getAllUsers, login } from '../userController/userController';
 import { createEvent, getAllEvents } from '../eventController/eventController';
 import { config } from 'process';
-const cors: any = require("cors")
-const session: any = require("express-session")
+const cors = require("cors")
+const session = require("express-session")
 // const pgSession = require('connect-pg-simple')(session)
 // require("dotenv").config(".env")
 
