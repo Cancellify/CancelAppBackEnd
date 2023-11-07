@@ -18,7 +18,7 @@ async function createNewAccount(req: Request, res: Response) {
       
       // Create new account data
       const newAccountData = {
-        username: username.toLowerCase(),
+        username: username,
         hashed_salt_password: hashSaltedPassword,
         salt: salt,
         email: email,
@@ -41,7 +41,7 @@ async function createNewAccount(req: Request, res: Response) {
       
       
       // Retrive account data based on username
-      let accountData = await getUser(inputUsername.toLowerCase());
+      let accountData = await getUser(inputUsername);
      
       
       // Throw error if username is wrong
