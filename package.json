@@ -1,9 +1,8 @@
 {
   "scripts": {
-    "heroku-start": "ts-node &&./server.ts",
+    "heroku-start": "ts-node ./server.ts",
     "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only src/server.ts",
-    "postinstall": "npx tsc",
-    "build": "npm install && npx prisma db pull && npx prisma migrate reset --force && npx prisma migrate deploy && npm install typescript"
+    "build": "npm install && npx prisma db pull && npx prisma migrate reset --force && npx prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
