@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from 'express';
-import { createAttendance, createNewEvent } from '../eventModel/eventModel';
+import { createAttendance, createNewEvent, getEvents, getEventDetails } from '../eventModel/eventModel';
 import { getUser } from '../userModel/userModel';
 import { sendMail, mailOptions, transporter } from '../sendmail';
 
@@ -15,9 +15,9 @@ async function createEvent(req: Request, res: Response) {
         Date: date,
       }
 
-      console.log(sentEventData)
-
+      
       const responseID = await createNewEvent(sentEventData);
+
 
       let userIdArray:any = [];
       let userEmailArray:any = [];
@@ -61,4 +61,30 @@ async function createEvent(req: Request, res: Response) {
     }
   }
 
-export {createEvent}
+  async function getAllEvents(req: Request, res: Response) {
+    try{
+      let { id } = req.body;
+
+      id = Number(id)
+
+      const data = await getEvents(id);
+
+      let eventDetails = [];
+
+      for(let i =0; i < data.length; i ++){
+        let allDetails = await getEventDetails(data[i].eventId);
+        eventDetails.push(allDetails);
+      }
+
+
+      console.log(eventDetails);
+      console.log(data);
+
+      res.status(201).send("events fetched");
+    } catch (error: any) {
+      res.status(409).send(`Failed to create event: ${error.message}`);
+    }
+  }
+  
+
+export {createEvent, getAllEvents}

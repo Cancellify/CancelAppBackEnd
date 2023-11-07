@@ -66,6 +66,7 @@ async function createNewAccount(req: Request, res: Response) {
         firstName: accountData.first_name,
         lastName: accountData.last_name,
         username: accountData.username,
+        id: accountData.id
       }
 
    
