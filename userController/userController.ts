@@ -1,5 +1,5 @@
 import  { createUser, getUser, getAll } from "../userModel/userModel"
-import express, { Express, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import crypto from "crypto"
 
 

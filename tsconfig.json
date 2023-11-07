@@ -9,10 +9,6 @@
         "outDir": "dist",
         "sourceMap": true,
         "lib": ["ESNext"],
-        "typeRoots": [
-            "./node_modules/@types",
-            "./types"
-          ]
     },
     "exclude": [
         "node_modules"

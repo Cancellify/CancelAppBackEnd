@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import { createAttendance, createNewEvent, getEvents, getEventDetails } from '../eventModel/eventModel';
 import { getUser } from '../userModel/userModel';
 import { sendMail, mailOptions, transporter } from '../sendmail';
-const moment = require('moment');
+const moment: any = require('moment');
 
 
 async function createEvent(req: Request, res: Response) {
