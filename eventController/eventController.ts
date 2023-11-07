@@ -51,10 +51,11 @@ async function createEvent(req: Request, res: Response) {
       let humanReadableDate: any = moment(date).format("MMM Do YY");
 
       mailOptions.to = userEmailArray
-      mailOptions.html = `You have been invited to ${eventName} by ${creator} on ${humanReadableDate} \n
+      mailOptions.html = `You have been invited to ${eventName} by ${creator} on ${humanReadableDate}.
                             Please go to Cancellify to set your attendance to coming if you would like to attend.
-                          \n \n
-                          Best Regards, \n
+                          <br/>
+                          Best Regards, 
+                          <br/>
                           Cancellify Team`
 
       if(userEmailArray.length > 0){
