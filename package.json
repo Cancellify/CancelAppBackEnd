@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "heroku-start": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only src/server.ts",
+    "heroku-start": "npx ts-node ./server.ts",
     "dev": "tsnd --respawn -r tsconfig-paths/register --pretty --transpile-only src/server.ts",
     "build": "npm install && npx prisma db pull && npx prisma migrate reset --force && npx prisma migrate deploy && npm install typescript"
   },
