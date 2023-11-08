@@ -2,9 +2,10 @@ import express, { Express, Request, Response } from 'express';
 import crypto from "crypto"
 import { createNewAccount, getAllUsers, login, deleteAccount } from '../userController/userController';
 import { createEvent, getAllEvents, cancelEvent } from '../eventController/eventController';
-import { config } from 'process';
-const cors = require("cors")
-const session = require("express-session")
+const cors = require("cors");
+const session = require("express-session");
+// const cookieParser = require("cookie-parser");
+
 // const pgSession = require('connect-pg-simple')(session)
 // require("dotenv").config(".env")
 
@@ -29,24 +30,36 @@ app.use(express.json());
 //  }
 // }))
 
+// app.use(cors({
+//       origin: "http://localhost:3000",
+//       methods: ["POST", "PATCH", "GET", "OPTIONS", "HEAD"],
+//       credentials: true
+//   }))
+
+// store: new pgSession({
+//   pool: process.env.DATABASE_URL,
+//   tableName: 'session'
+// }),
+
 app.use(cors({
   origin: true,
   methods: "GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS",
   credentials: true
 }));
 
+// app.use(cookieParser());
+
 const SECRET = crypto.randomBytes(22).toString("hex");
+
 app.use(session({
-//   store: new pgSession({
-//     pool: process.env.DATABASE_URL,
-//     tableName: 'session'
-// }),
+  name: "session",
   secret: SECRET,
-  cookie: {maxAge: 60000,
-  secure: true},
+  cookie: {
+    maxAge: 60000,
+    secure: false
+  },
   resave: false,
-  saveUninitialized: true,
-  
+  saveUninitialized: false,
 }))
 
 app.post("/accounts/new", createNewAccount)

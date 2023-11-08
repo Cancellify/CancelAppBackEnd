@@ -68,10 +68,10 @@ async function createNewAccount(req: Request, res: Response) {
         username: accountData.username,
         id: accountData.id
       }
-
+      
    
       res.status(200).send(JSON.stringify(sentAccountData));
-    
+      //  res.status(200).send(req.session.id);
 
     } catch (err) {
       res.status(401).send("Invalid Username or Password");
