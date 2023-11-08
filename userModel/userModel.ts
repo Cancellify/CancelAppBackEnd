@@ -38,6 +38,12 @@ async function getAll() {
     return data;
 }
 
+async function deleteUser(username:string){
+    await prisma.user.deleteMany({
+        where:{ username : username}
+    })
+}
 
 
-export { createUser, getUser, getAll, getUserEmail }
+
+export { createUser, getUser, getAll, getUserEmail, deleteUser }

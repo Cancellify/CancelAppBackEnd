@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import crypto from "crypto"
-import { createNewAccount, getAllUsers, login } from '../userController/userController';
+import { createNewAccount, getAllUsers, login, deleteAccount } from '../userController/userController';
 import { createEvent, getAllEvents, cancelEvent } from '../eventController/eventController';
 import { config } from 'process';
 const cors = require("cors")
@@ -61,19 +61,10 @@ app.post("/events/all", getAllEvents)
 
 app.patch("/events/cancel", cancelEvent)
 
+app.post("/accounts/delete", deleteAccount)
 
-  
-
-
-
-
-
-
-
-
-
-  app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+app.listen(port, () => {
+console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
 export { app }
