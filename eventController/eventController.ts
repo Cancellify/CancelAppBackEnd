@@ -142,6 +142,7 @@ async function createEvent(req: Request, res: Response) {
   }
   console.log(emailArray);
   if(emailSend === false){
+      mailOptions.subject = "Congratulations, an event has been canceled!"
       mailOptions.to = emailArray
       mailOptions.html = `Congrats ${eventData[0].event_description} has been canceled by ALL!
                             
