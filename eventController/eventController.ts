@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createAttendance, createNewEvent, getEvents, getEventDetails, updateAttendance, getEventsByEvent, deleteAttendance } from '../eventModel/eventModel';
+import { createAttendance, createNewEvent, getEvents, getEventDetails, updateAttendance, getEventsByEvent, deleteAttendance, deleteIndividualAttendance } from '../eventModel/eventModel';
 import { getUser, getUserEmail } from '../userModel/userModel';
 import { sendMail, mailOptions, transporter } from '../sendmail';
 import  moment  from "moment"
@@ -27,6 +27,7 @@ async function createEvent(req: Request, res: Response) {
         userIdArray.push(resultId?.id);
         userEmailArray.push(resultId?.email)
       }
+      
 
       for(let i = 0; i < userIdArray.length; i++ ){
         let inviteObj = {
@@ -48,8 +49,8 @@ async function createEvent(req: Request, res: Response) {
       
       await createAttendance(creatorAttend);
 
-      let humanReadableDate: any = moment(date).format("MMM Do YY");
-
+      let humanReadableDate: string = moment(date).format("MMM Do YY");
+      mailOptions.subject = "You have been invited!"
       mailOptions.to = userEmailArray
       mailOptions.html = `You have been invited to ${eventName} by ${creator} on ${humanReadableDate}.
                             Please go to Cancellify to set your attendance to coming if you would like to attend.
@@ -112,19 +113,43 @@ async function createEvent(req: Request, res: Response) {
 
   async function cancelEvent(req: Request, res: Response) {
     try{
-    let { attendance, userId, eventId } = req.body
+    let { attendance, userId, eventId, openCancel } = req.body;
+
     
     await updateAttendance(attendance, userId, eventId);
 
     const data = await getEventsByEvent(eventId);
-
-    console.log(data);
-
     const eventData = await getEventDetails(eventId);
-    console.log(eventData)
+
+      
+
+    const openCancelEmailArray = []
+    if(openCancel === true){
+      for(let i = 0; i < data.length; i++){
+      let email = await getUserEmail(data[i].userId);
+      openCancelEmailArray.push(email.email);
+    }
+  }
+  
+  if(openCancel === true){
+    const dataForUsername = await getUserEmail(userId);
+    const userName = dataForUsername.username
+    mailOptions.subject = `Congrats ${userName} has canceled`
+    mailOptions.to = openCancelEmailArray
+    mailOptions.html = `Seems like ${userName} ${eventData[0].event_description} wasn't as excited as you. :'(.
+                          
+                        <br/>
+                        Better luck next time,
+                        <br/>
+                        Cancellify Team`
+    sendMail(transporter, mailOptions);
+    await deleteIndividualAttendance(userId, eventId);
+  }
+
+  const dataAfterCancel = await getEventsByEvent(eventId);
+  
 
     let emailSend = false;
-
     for(let i = 0; i < data.length; i++){
       if(data[i].attendance === true){
         emailSend = true;
@@ -132,28 +157,33 @@ async function createEvent(req: Request, res: Response) {
       }
     }
 
-    const emailArray = []
-    
+    const emailArray = [] 
     if(emailSend === false){
       for(let i = 0; i < data.length; i++){
       let email = await getUserEmail(data[i].userId)
       emailArray.push(email.email);
     }
   }
-  console.log(emailArray);
+
+  
+
+  
+ 
   if(emailSend === false){
       mailOptions.subject = "Congratulations, an event has been canceled!"
       mailOptions.to = emailArray
       mailOptions.html = `Congrats ${eventData[0].event_description} has been canceled by ALL!
                             
                           <br/>
-                          Enjoy Sleeping
+                          Enjoy Sleeping,
                           <br/>
                           Cancellify Team`
       sendMail(transporter, mailOptions);
       await deleteAttendance(eventId);
 
       }
+
+    
     
     
 

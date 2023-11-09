@@ -21,7 +21,8 @@ async function getUserEmail(id:number) {
         where:{
             id: id
         }, select: {
-            email: true
+            email: true,
+            username: true
         }
     })
     return data;

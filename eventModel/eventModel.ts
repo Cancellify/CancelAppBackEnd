@@ -62,4 +62,14 @@ async function deleteAttendance(event:number) {
 }
 
 
-export {createNewEvent, createAttendance, getEvents, getEventDetails, updateAttendance, getEventsByEvent, deleteAttendance}
+async function deleteIndividualAttendance(userId:number, eventId:number) {
+    await prisma.eventAttendance.deleteMany({
+        where: {
+            userId : userId,
+            eventId: eventId
+        }
+    })
+}
+
+
+export {createNewEvent, createAttendance, getEvents, getEventDetails, updateAttendance, getEventsByEvent, deleteAttendance, deleteIndividualAttendance}
